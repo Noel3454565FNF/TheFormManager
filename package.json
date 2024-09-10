@@ -1,0 +1,26 @@
+{
+  "name": "theformmanager",
+  "version": "1.0.0",
+  "description": "manager for the game \"The Form\"",
+  "main": "main.js",
+  "scripts": {
+    "test": "test.js",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "the",
+    "form",
+    "manager"
+  ],
+  "author": "noel345",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^32.0.2",
+    "express": "^4.20.0",
+    "noblox.js": "^6.0.2"
+  }
+}
