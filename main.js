@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const http = require('http');
+const { exec } = require('child_process');
 
 // Declare the variable for the BrowserWindow
 let mainWindow, mainWindow2;
@@ -115,6 +116,20 @@ async function startAsync() {
 }
 // Call the sendWebRequest function after Electron is ready
 
-// Quit the app when all windows are closed (standard for Electron apps)
+// Quit the app when all windows are clo  sed (standard for Electron apps)
 
 // Activate the app when it is opened again on macOS
+
+
+
+// exec('powershell -Command "electron ."', (error, stdout, stderr) => {
+//   if (error) {
+//       console.error(`Error: ${error.message}`);
+//       return;
+//   }
+//   if (stderr) {
+//       console.error(`Stderr: ${stderr}`);
+//       return;
+//   }
+//   console.log(`Output: ${stdout}`);
+// });
