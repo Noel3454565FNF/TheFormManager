@@ -19,8 +19,11 @@
   "author": "noel345",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
     "electron": "^32.0.2",
     "express": "^4.20.0",
-    "noblox.js": "^6.0.2"
+    "noblox.js": "^6.0.2",
+    "playwright": "^1.47.0"
   }
 }
