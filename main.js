@@ -1,16 +1,29 @@
-const { app, BrowserWindow } = require('electron');
+const { elec, BrowserWindow } = require('electron');
 const http = require('http');
-const { exec } = require('child_process');
-
+const { exec, spawn } = require('child_process');
+const path = require('path');
+const url = require('url');
+const express = require("express");
+const app = express();
+const aaa = require("node:os");
+const port = 3000;
+const bodyParser = require("body-parser");
+const cors = require("cors");
 // Declare the variable for the BrowserWindow
-let mainWindow, mainWindow2;
+// const mainWindow = null;
+// const mainWindow2 = null;
+const currentOrder = null;
+let Persistent, mainWindow, mainWindow2, InputWindow;
+let userInf;
 
+app.use(cors());
 
 function wait(ms) {
+  
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-// Create a new BrowserWindow when Electron is ready
-function createWindow() {
+// Create a new BrowserWindow when is ready
+function loadYON() {
   mainWindow = new BrowserWindow({
     width: 200,
     height: 200,
@@ -19,6 +32,9 @@ function createWindow() {
     center: true,
     backgroundColor: "black",
     titleBarStyle: "hidden",
+    show: true,
+    title: "no",
+    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -30,37 +46,133 @@ function createWindow() {
     x: 800,
     y: 300,
     center: true,
-    closable: false,
     backgroundColor: "black",
     titleBarStyle: "hidden",
+    show: true,
+    alwaysOnTop: true,
+    title: "yes",
     webPreferences: {
       nodeIntegration: true,
     },
   });
 
   // Load an HTML file into the window
-  mainWindow.loadFile('index.html');
-  mainWindow2.loadFile('in.html');  
+  mainWindow.loadFile('NO.html');
+  mainWindow2.loadFile('YES.html'); 
+ 
 }
 
-// Create an HTTP server
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello from the Node.js HTTP server\n');
+app.use(bodyParser.json());
+
+app.listen(port, () => {
+  console.log(`Service A is running on http://localhost:${port}`);
 });
 
-// Listen on a specific port, e.g., 3000
-server.listen(3000, () => {
-  console.log('Server running at http://127.0.0.1:3000/');
+app.post('/yes', (req, res) => {
+  res.sendStatus(200);
+  const lol = req.body;
+  console.log(lol.data1);
+  sendWebRequest('yes', 'yes')
+  also("UnspawnYON")
 });
+app.post('/no', (req, res) => {
+  res.sendStatus(200);
+   const lol = req.body;
+   console.log(lol.data1);
+  sendWebRequest('no', 'no')
+  also("UnspawnYON")
+});
+app.post('/input', (req, res) => {
+  console.log(req.body);
+  res.json({ message: "OK" });
+  sendWebRequest('input', req.body.data2)
+  also("UnspawnI")
+});
+app.post('/UnityOrder', (req, res) => {
+console.log(req.body.order);
+res.send("hey..");
+if (req.body.order == 'YesOrNo')
+{
+  also("spawnYON");
+}
+if (req.body.order == "Input")
+{
+  also("spawnI");
+}
+if (req.body.order == "Remove")
+{
+  also("remove");
+}
+if (req.body.order == "Test")
+{
+  also("test");
+}
+if (req.body.order == "UnspawnYON")
+{
+  also("UnspawnYON");
+}
+});
+
+
+async function also(ord)
+{
+  if (ord == "remove")
+  {
+
+  }
+  if (ord == "spawnYON")
+  {
+    loadYON();
+    console.log("yes");
+  }
+  if (ord == "UnspawnYON")
+  {
+    mainWindow.close();
+    mainWindow2.close();
+  }
+  if (ord == "spawnI")
+  {
+    spawnI();
+  }
+  if (ord == "UnspawnI")
+  {
+    unspawnI();
+  }
+}
+
+
+function spawnI()
+{
+  InputWindow = new BrowserWindow({
+    width: 200,
+    height: 200,
+    x: 600,
+    y: 300,
+    center: true,
+    backgroundColor: "black",
+    titleBarStyle: "hidden",
+    show: true,
+    alwaysOnTop: true,
+    title: "Input here",
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+  InputWindow.loadFile("INPUT.html");
+  InputWindow.eventNames
+}
+
+function unspawnI()
+{
+  InputWindow.close();
+}
 
 // Function to send a web request
-function sendWebRequest() {
+function sendWebRequest(path, content) {
   const options = {
     hostname: 'localhost', // Target server's hostname
     port: 8080,            // Target server's port
-    path: '/test',         // Target server's path
+    path: '/' + path,         // Target server's path
     method: 'POST',        // HTTP method (GET/POST/PUT/DELETE)
     headers: {
       'Content-Type': 'application/json',
@@ -69,8 +181,8 @@ function sendWebRequest() {
 
   // Data to send in the body of the request (if needed)
   const postData = JSON.stringify({
-    message: 'Hello from Electron and Node.js!',
-    success: true,
+    message: content,
+    FromUnity: true,
   });
 
   const req = http.request(options, (res) => {
@@ -104,14 +216,45 @@ function start()
 {
   console.log("booting-up...");
   startAsync();
+  userInf = aaa.userInfo();
+   console.log(userInf.username);
 }
+
+
+function createWindow()
+{
+  Persistent = new BrowserWindow({
+    width: 0,
+    height: 0,
+    x: 300,
+    y: 300,
+    center: true,
+    backgroundColor: "black",
+    titleBarStyle: "hidden",
+    show: true,
+    title: "Im always Watching.",
+    autoHideMenuBar: true,
+    opacity: 0,
+    skipTaskbar: true,
+    webPreferences: {
+      nodeIntegration: true,
+    },
+  });
+
+}
+
 
 async function startAsync() {
   await wait(3000);
+  // lol = new Electron.BaseWindow({
+  //   width: 200, 
+  //   height: 200,
+  //   title: "test",
+  // }),  
   console.log("boot-up!");
   createWindow();
-  
-  setTimeout(sendWebRequest, 3000);
+  //also("spawnYON").then();
+  //setTimeout(sendWebRequest, 3000);
 
 }
 // Call the sendWebRequest function after Electron is ready

@@ -1,0 +1,44 @@
+<script>
+
+
+    function sended()
+    {
+        const url = 'http://127.0.0.1:3000/no';
+        const data = {
+            data1: "no",
+            data2: "requiredToken"
+        }
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    }
+    
+    </script>
+    
+    <body>
+        <div class="wrapper">
+        <button class="button"
+        onclick="sended()">NO<script>
+        </script></button>
+        </div>
+    
+        <style>
+            .wrapper {
+                text-align: center;
+            }
+            .button {
+                position: absolute;
+                top: 45%;
+                right: 40%;
+                color: white;
+                background-color: black;
+                border: 0;
+                cursor: grab;
+            }
+        </style>
+    </body>
+    
