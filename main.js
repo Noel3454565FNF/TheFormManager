@@ -33,7 +33,7 @@ function loadYON() {
     backgroundColor: "black",
     titleBarStyle: "hidden",
     show: true,
-    title: "no",
+    title: "yes",
     alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
@@ -50,15 +50,15 @@ function loadYON() {
     titleBarStyle: "hidden",
     show: true,
     alwaysOnTop: true,
-    title: "yes",
+    title: "no",
     webPreferences: {
       nodeIntegration: true,
     },
   });
 
   // Load an HTML file into the window
-  mainWindow.loadFile('NO.html');
-  mainWindow2.loadFile('YES.html'); 
+  mainWindow.loadFile('YES.html');
+  mainWindow2.loadFile('NO.html'); 
  
 }
 
@@ -89,13 +89,13 @@ app.post('/input', (req, res) => {
   also("UnspawnI")
 });
 app.post('/UnityOrder', (req, res) => {
-console.log(req.body.order);
+console.log(req.body);
 res.send("hey..");
-if (req.body.order == 'YesOrNo')
+if (req.body.order == 'YesOrNo' || req.body.order == "YON")
 {
   also("spawnYON");
 }
-if (req.body.order == "Input")
+if (req.body.order == "Input" || req.body.order == "input")
 {
   also("spawnI");
 }
